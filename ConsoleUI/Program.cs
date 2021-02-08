@@ -1,5 +1,6 @@
 ﻿using Business.Concrete;
 using DataAccess.Concrete;
+using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using System;
@@ -12,47 +13,53 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
 
-            CarManager carManager = new CarManager(new InMemoryCarDal());
+            CarManager carManager = new CarManager(new EfCarDal());
 
-            Console.WriteLine("---Araba Ekleme İşlemleri---");
-            carManager.Add(new Car { Id = 4, BrandId = 6, ColorId = 7, ModelYear = 1999, DailyPrice = 14999, Description = "Renault-Broadway" });
-            Console.WriteLine();
-
-            Console.WriteLine("---Mevcut Arabalar---");
-            foreach (var item in carManager.GetAll())
-            {
-                Console.WriteLine(item.Description);
-                
-            }
-            Console.WriteLine();
-
-            Console.WriteLine("---Özel Araç Bilgisi---");
-            foreach (var item in carManager.GetById(2))
-            {
-                Console.WriteLine("{0} id numaralı araç: {1} ",item.Id,item.Description);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("---Araç Güncelleme İşlemi---");
-            carManager.Update(new Car { Id = 4, BrandId = 4, ColorId = 4, ModelYear = 1997, DailyPrice = 12500, Description = "Renault-Spring" });
-
-            Console.WriteLine("---Mevcut Araçlar---");
-            foreach (var item in carManager.GetAll())
-            {
-                Console.WriteLine(item.Description);
-
-            }
-            Console.WriteLine();
-            Console.WriteLine("Araç Silme İşlemi");
-            carManager.Delete(new Car { Id = 4 });
-
-            Console.WriteLine("---Mevcut Araçlar---");
-            foreach (var item in carManager.GetAll())
-            {
-                Console.WriteLine(item.Description);
-
-            }
+            Console.WriteLine("Araç Bilgileri...");
+            Listele(carManager);
             
+
+            //Yeni Araba Ekleme
+            /*carmanager.add(new car()
+            {
+                brandıd = 3,
+                colorıd = 3,
+                modelyear = "2010",
+                dailyprice = 100,
+                descriptions = "manuel dizel"
+            });*/
+
+
+            //Araba Bilgisi Güncelleme
+           /* carmanager.update(new car
+            {
+                ıd = 6,
+                brandıd = 3,
+                colorıd = 3,
+                modelyear = "2010",
+                dailyprice = 110,
+                descriptions = "manuel dizel"
+
+            //}) ;*/
+
+                //Araba Silme İşlemi
+                //carManager.Delete(new Car() { Id = 6 });
+
+            //BrandId'ye Göre Listeleme
+            /* foreach (var item in carManager.GetCarsByBrandId(2))
+            {
+                Console.WriteLine(item.BrandId + "  " + item.Descriptions);
+            }*/
+
+
+        }
+
+        private static void Listele(CarManager carManager)
+        {
+            foreach (var item in carManager.GetAll())
+            {
+                Console.WriteLine(item.Id + "-" + item.BrandId + "-" + item.ColorId + "-" +item.ModelYear +"-" + item.DailyPrice+ "-" +item.Descriptions);
+            }
         }
     }
 }
