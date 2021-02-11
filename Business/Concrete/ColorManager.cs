@@ -18,7 +18,7 @@ namespace Business.Concrete
 
         public void Add(Color color)
         {
-            if (color.Name.Length > 2)
+            if (color.ColorName.Length > 2)
             {
                 _colorDal.Add(color);
                 Console.WriteLine("Renk Bilgisi Başarıyla Eklendi");
@@ -39,7 +39,7 @@ namespace Business.Concrete
 
         public Color GetById(int id)
         {
-            return _colorDal.Get(c => c.Id == id);
+            return _colorDal.Get(c => c.ColorId == id);
         }
 
         public void Update(Color color)
