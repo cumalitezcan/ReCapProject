@@ -12,155 +12,59 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarManager carManager = new CarManager(new EfCarDal());
-             BrandManager brandManager = new BrandManager(new EfBrandDal());
-             ColorManager colorManager = new ColorManager(new EfColorDal());
-
-            Console.WriteLine("Rent a car app");
-
-            //Region içerisindeki çoklu yorum operatörünü kaldırınız.
-
-            Console.WriteLine("CarCrudOperation");
-            #region CarCRUDOperation
-            /*
-             Car car1 = new Car()
-             {
-                 BrandId = 3,
-                 ColorId = 3,
-                 DailyPrice = 75,
-                 ModelYear="2002",
-                 Descriptions="Manuel Benzin"
-             };
-
-            //carManager.Add(car1);
-
-            //Update İşlemi
-            //carManager.Update(new Car {Id=1002,BrandId=3,ColorId=3,ModelYear="2002",DailyPrice=55,Descriptions="Manuel Benzin" });
-            
-            //CarList(carManager);
-            //Console.WriteLine();
-
-            //carManager.Delete(new Car{ Id=1002});
-            //CarList(carManager);
-            */
-            #endregion
-
-            
-            Console.WriteLine("BrandCrudOperation");
-            #region BrandCRUDOperation
-            /*
-            brandManager.Add(new Brand()
-            {
-                BrandName = "Ferrari"
-            });
-
-            brandManager.Update(new Brand()
-            { 
-             BrandId = 1002,
-             BrandName="Alfa Romeo"});
-
-            foreach (var brand in brandManager.GetAll())
-            {
-                Console.WriteLine(brand.BrandName);
-            }
-            Console.WriteLine();
-
-
-            brandManager.Delete(new Brand
-            {
-                BrandId = 1002
-            });
-
-            foreach (var brand in brandManager.GetAll())
-            {
-                Console.WriteLine(brand.BrandName);
-            }
-            */
-
-            #endregion
-
-            
-            Console.WriteLine("ColorCrudOperation");
-            #region ColorCRUDOperation
-
-            /*
-            colorManager.Add(new Color()
-            {
-                ColorName = "Koyu Gri"
-            });
-
-            colorManager.Update(new Color()
-            {
-                ColorId = 1002,
-                ColorName = "Metalik Gri"
-            });
-
-            foreach (var color in colorManager.GetAll())
-            {
-                Console.WriteLine(color.ColorName);
-            }
-            Console.WriteLine();
-
-
-            colorManager.Delete(new Color
-            {
-                ColorId = 1002
-            });
-
-            foreach (var color in colorManager.GetAll())
-            {
-                Console.WriteLine(color.ColorName);
-            }
-            */
-
-            #endregion
-            
-            
-            Console.WriteLine("DtoCarDetail");
-            #region UseDtoCarDetail
-            /*
-            foreach (var dtoCar in carManager.GetCarDetails())
-            {
-                Console.WriteLine(dtoCar.CarId + "/" + dtoCar.BrandName + "/" + dtoCar.ColorName + "/" + dtoCar.DailyPrice);
-            }
-            */
-            #endregion
-            
-
-            
-            Console.WriteLine("UseGetById");
-            #region GetCarId
-            /*
-            Console.WriteLine();
-
-            //Id'ye göre getir
-            Car item = carManager.GetById(2);
-            Console.WriteLine(item.Id+"/"+item.Descriptions);
-            Console.WriteLine();
-
-            //Brand Id'ye göre getir
-            foreach (var car in carManager.GetCarsByBrandId(2))
-            {
-                Console.WriteLine(car.BrandId+"/"+car.Descriptions);
-            }
-            Console.WriteLine();
-
-            //Color Id'ye göre getir
-            foreach (Car car in carManager.GetCarsByColorId(3))
-            {
-                Console.WriteLine(car.ColorId+"/"+car.Descriptions);
-            }
-            */
-            #endregion
+            //AddCustomer();
+            //ReturnDateError();
+            //CarDetailList();
+            //RentalList();
 
         }
 
-        private static void CarList(CarManager carManager)
+        private static void RentalList()
         {
-            foreach (var car in carManager.GetAll())
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            foreach (var item in rentalManager.GetAll().Data)
             {
-                Console.WriteLine(" " + car.Id + "/" + car.DailyPrice + "/" + car.Descriptions);
+                Console.WriteLine(item.CarId + "/" + item.CustomerId + "/" +
+                    item.RentDate + "/" + item.ReturnDate);
             }
         }
+
+        private static void AddCustomer()
+        {
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            var result = customerManager.Add(new Customer
+            {
+                UserId = 4,
+                CompanyName = "Togg Otomobil"
+            });
+            Console.WriteLine(result.Message);
+        }
+
+        private static void CarDetailList()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+            var result = carManager.GetCarDetails();
+            foreach (var item in result.Data)
+            {
+                Console.WriteLine(item.CarName + "/" + item.BrandName + "/" + item.ColorName);
+            }
+        }
+
+        private static void ReturnDateError()
+        {
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            var result = rentalManager.Add(new Rental
+            {
+                CarId = 2,
+                CustomerId = 2,
+                RentDate = DateTime.Now
+            });
+            Console.WriteLine(result.Message);
+        }
+
+      
+
+
+
     }
 }
