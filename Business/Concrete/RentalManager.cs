@@ -20,11 +20,17 @@ namespace Business.Concrete
 
         public IResult Add(Rental rental)
         {
+            //Select count(*) from Rentals,Cars where Rentals.CarId = Cars.Id
             var rentalReturnDate = _rentalDal.GetAll(r=>r.CarId == rental.CarId);
+
+            //count(*)>0
             if (rentalReturnDate.Count > 0)
             {
+                
                 foreach (var rrdate in rentalReturnDate)
                 {
+                    //Arabanın kiralanabilmesi için arabanın teslim edilmesi gerekmektedir.
+                    //Bu şart ReturnDate içinde null varsa karşılanamamaktadır.
                     if (rrdate.ReturnDate == null)
                     {
                         return new ErrorResult(Messages.RentalInvalid);
