@@ -3,6 +3,7 @@ using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -10,6 +11,7 @@ using Entities.DTOs;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.Concrete
@@ -17,18 +19,31 @@ namespace Business.Concrete
     public class CarManager : ICarService
     {
         ICarDal _carDal;
+        IRentalService _rentalService;
+        
 
-        public CarManager(ICarDal carDal)
+        public CarManager(ICarDal carDal,IRentalService rentalService)
         {
             _carDal = carDal;
+            _rentalService = rentalService;
         }
 
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            
+          IResult result =  BusinessRules.Run(CheckIfDescriptionsExists(car.Descriptions),
+              CheckIfCarCountOfBrandCorrect(car.BrandId),
+              CheckIfRentalLimitExceded());
+
+            if (result != null)
+            {
+                return result;
+            }
+
             _carDal.Add(car);
             return new SuccessResult(Messages.CarAdded);
+
+
                
         }
 
@@ -76,7 +91,37 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(),Messages.CarDetailListed);
         }
 
+        private IResult CheckIfCarCountOfBrandCorrect(int brandId)
+        {
+            var result = _carDal.GetAll(c => c.BrandId == brandId).Count;
+            if (result >= 3)
+            {
+                return new ErrorResult("3 veya daha fazla marka var");
+            }
+            return new SuccessResult();
+        }
 
+        private IResult CheckIfDescriptionsExists(string descriptions)
+        {
+            var result = _carDal.GetAll(c => c.Descriptions == descriptions).Any();
+            if (result)
+            {
+                return new ErrorResult();
+            }
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfRentalLimitExceded()
+        {
+            var result = _rentalService.GetAll();
+            if (result.Data.Count > 15)
+            {
+                return new ErrorResult("Kiralama limiti aşıldı");
+            }
+            return new SuccessResult();
+        }
 
     }
+
+    
 }

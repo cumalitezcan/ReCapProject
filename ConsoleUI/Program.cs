@@ -17,6 +17,18 @@ namespace ConsoleUI
             //CarDetailList();
             //RentalList();
 
+          /*  CarImage carImage = new CarImage
+            {
+                Id = 1,
+                CarId = 1,
+                ImagePath = @"c:\sources\images\birinci.ikinci.ucuncu.jpg",
+                Date = DateTime.Now
+            };
+            string[] fileSplit = carImage.ImagePath.Split('.');
+            var extensionOfFile = "." + fileSplit[fileSplit.Length - 1];
+            var newPathName = Guid.NewGuid().ToString() + extensionOfFile;
+            Console.WriteLine(newPathName);*/
+
         }
 
         private static void RentalList()
@@ -40,15 +52,15 @@ namespace ConsoleUI
             Console.WriteLine(result.Message);
         }
 
-        private static void CarDetailList()
-        {
-            CarManager carManager = new CarManager(new EfCarDal());
-            var result = carManager.GetCarDetails();
-            foreach (var item in result.Data)
-            {
-                Console.WriteLine(item.CarName + "/" + item.BrandName + "/" + item.ColorName);
-            }
-        }
+        //private static void CarDetailList()
+        //{
+        //    CarManager carManager = new CarManager(new EfCarDal());
+        //    var result = carManager.GetCarDetails();
+        //    foreach (var item in result.Data)
+        //    {
+        //        Console.WriteLine(item.CarName + "/" + item.BrandName + "/" + item.ColorName);
+        //    }
+        //}
 
         private static void ReturnDateError()
         {
