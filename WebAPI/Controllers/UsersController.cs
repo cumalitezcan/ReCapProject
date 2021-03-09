@@ -1,5 +1,5 @@
 ﻿using Business.Abstract;
-using Entities.Concrete;
+using Core.Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,9 +13,8 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-
+        
         IUserService _userService;
-
         public UsersController(IUserService userService)
         {
             _userService = userService;
@@ -32,9 +31,8 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-
         [HttpGet("getbyid")]
-        public IActionResult Get(int id)
+        public IActionResult GetById(int id)
         {
             var result = _userService.GetById(id);
             if (result.Success)
@@ -77,6 +75,5 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
     }
-
 }
 

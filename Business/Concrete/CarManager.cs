@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -28,12 +29,13 @@ namespace Business.Concrete
             _rentalService = rentalService;
         }
 
+        [SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-          IResult result =  BusinessRules.Run(CheckIfDescriptionsExists(car.Descriptions),
-              CheckIfCarCountOfBrandCorrect(car.BrandId),
-              CheckIfRentalLimitExceded());
+            IResult result = BusinessRules.Run(CheckIfDescriptionsExists(car.Descriptions),
+                CheckIfCarCountOfBrandCorrect(car.BrandId),
+                CheckIfRentalLimitExceded());
 
             if (result != null)
             {
@@ -61,7 +63,7 @@ namespace Business.Concrete
 
         public IDataResult <List<Car>> GetAll()
         {
-            if (DateTime.Now.Hour == 19)
+            if (DateTime.Now.Hour == 15)
             {
                 return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
             }
@@ -94,7 +96,7 @@ namespace Business.Concrete
         private IResult CheckIfCarCountOfBrandCorrect(int brandId)
         {
             var result = _carDal.GetAll(c => c.BrandId == brandId).Count;
-            if (result >= 3)
+            if (result >= 7)
             {
                 return new ErrorResult("3 veya daha fazla marka var");
             }
@@ -104,9 +106,9 @@ namespace Business.Concrete
         private IResult CheckIfDescriptionsExists(string descriptions)
         {
             var result = _carDal.GetAll(c => c.Descriptions == descriptions).Any();
-            if (result)
+            if (!result)
             {
-                return new ErrorResult();
+                return new ErrorResult("Description alanı eksik");
             }
             return new SuccessResult();
         }
