@@ -22,12 +22,13 @@ namespace Business.Concrete
     {
         ICarDal _carDal;
         IRentalService _rentalService;
-        
+       
 
-        public CarManager(ICarDal carDal,IRentalService rentalService)
+        public CarManager(ICarDal carDal,IRentalService rentalService,ICarImageService carImageService)
         {
             _carDal = carDal;
             _rentalService = rentalService;
+          
         }
 
         [SecuredOperation("car.add,admin")]
@@ -47,6 +48,16 @@ namespace Business.Concrete
             _carDal.Add(car);
             return new SuccessResult(Messages.CarAdded);
      
+        }
+
+        public IDataResult<List<Car>> GetCarsByBrandId(int id)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id));
+        }
+
+        public IDataResult<List<Car>> GetCarsByColorId(int id)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id));
         }
 
         public IResult Delete(Car car)
@@ -74,16 +85,7 @@ namespace Business.Concrete
         }
 
 
-        public IDataResult<List<Car>> GetCarsByBrandId(int id)
-        {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id));
-        }
-
-        public IDataResult<List<Car>> GetCarsByColorId(int id)
-        {
-            return new SuccessDataResult<List<Car>> (_carDal.GetAll(c => c.ColorId == id));
-        }
-
+      
         [CacheAspect]
         //[PerformanceAspect(5)]
         public IDataResult<Car> GetById(int id)
@@ -102,7 +104,7 @@ namespace Business.Concrete
             var result = _carDal.GetAll(c => c.BrandId == brandId).Count;
             if (result >= 7)
             {
-                return new ErrorResult("3 veya daha fazla marka var");
+                return new ErrorResult("7 veya daha fazla marka var");
             }
             return new SuccessResult();
         }
@@ -130,6 +132,24 @@ namespace Business.Concrete
         public IResult AddTransactionalTest(Car car)
         {
             throw new NotImplementedException();
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarsDetailsByBrand(int brandId)
+        {
+          
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.BrandId == brandId));
+
+        }
+         public IDataResult<List<CarDetailDto>> GetCarsDetailsByColor(int colorId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.ColorId == colorId));
+
+        }
+
+     
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByCar(int carId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.Id == carId));
         }
     }
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
@@ -26,6 +27,8 @@ namespace WebAPI.Controllers
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
+            Thread.Sleep(2000);
+
             var result = _carService.GetAll();
             if (result.Success)
             {
@@ -56,6 +59,8 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+
+
         [HttpGet("getbycolorid")]
         public IActionResult GetByColorId(int id)
         {
@@ -66,17 +71,53 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
-        [HttpGet]
+
+
+        [HttpGet("getbybrandid")]
         public IActionResult GetByBrandId(int id)
         {
             var result = _carService.GetCarsByBrandId(id);
             if (result.Success)
             {
+                Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getcarsdetailsbybrand")]
+        public IActionResult GetCarsDetailsByBrand(int brandId)
+        {
+            var result = _carService.GetCarsDetailsByBrand(brandId);
+            if (result.Success)
+            {
                 return Ok(result);
             }
-           return BadRequest(result);
-            
+            return BadRequest(result);
         }
+
+        [HttpGet("getcarsdetailsbycolor")]
+        public IActionResult GetCarsDetailsByColor(int colorId)
+        {
+            var result = _carService.GetCarsDetailsByColor(colorId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getcardetailsbycar")]
+        public IActionResult GetCarDetailsByCar(int carId)
+        {
+            var result = _carService.GetCarDetailsByCar(carId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+       
 
         [HttpPost("add")]
         public IActionResult Add(Car car)
