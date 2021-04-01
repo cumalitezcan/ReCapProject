@@ -17,7 +17,10 @@ namespace Entities.DTOs
         public decimal DailyPrice { get; set; }
         public int BrandId { get; set; }
         public int ColorId { get; set; }
-        
+        public string ModelYear { get; set; }
+        public string Descriptions { get; set; }
+        public bool Status { get; set; }
+
 
 
         public int ImageId { get; set; }

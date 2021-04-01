@@ -36,7 +36,10 @@ namespace DataAccess.Concrete.EntityFramework
                                  ColorId = c.ColorId,
                                  ImagePath = cimg.ImagePath,
                                  Date = cimg.Date,
-                                 ImageId = cimg.Id
+                                 ImageId = cimg.Id,
+                                 ModelYear = car.ModelYear,
+                                 Descriptions = car.Descriptions,
+                                 Status = !context.Rentals.Any(r => r.CarId == car.Id && (r.ReturnDate == null || r.ReturnDate > DateTime.Now))
                              };
                 return result.ToList();
             }

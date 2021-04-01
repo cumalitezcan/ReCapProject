@@ -45,6 +45,8 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<AuthManager>().As<IAuthService>();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
+            builder.RegisterType<FakeCardManager>().As<IFakeCardService>();
+            builder.RegisterType<EfFakeCardDal>().As<IFakeCardDal>();
 
             builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>();
 

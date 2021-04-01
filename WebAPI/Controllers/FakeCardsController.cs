@@ -1,75 +1,30 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomersController : ControllerBase
+    public class FakeCardsController : ControllerBase
     {
-        ICustomerService _customerService;
+       private IFakeCardService _fakeCardService;
 
-        public CustomersController(ICustomerService customerService)
+        public FakeCardsController(IFakeCardService fakeCardService)
         {
-            _customerService = customerService;
-        }
-
-        [HttpGet("getall")]
-        public IActionResult GetAll()
-        {
-            var result = _customerService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpGet("getcustomerdetails")]
-        public IActionResult GetCustomerDetails()
-        {
-            var result = _customerService.GetCustomerDetails();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpGet("getcustomerdetailbycustomerid")]
-        public IActionResult GetCustomerDetailById(int customerId)
-        {
-            var result = _customerService.GetCustomerDetailById(customerId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-
-        [HttpGet("getbyid")]
-        public IActionResult Get(int id)
-        {
-            var result = _customerService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            _fakeCardService = fakeCardService;
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Customer customer)
+        public IActionResult Add(FakeCard fakeCard)
         {
-            var result = _customerService.Add(customer);
+            var result = _fakeCardService.Add(fakeCard);
             if (result.Success)
             {
                 return Ok(result);
@@ -78,9 +33,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Customer customer)
+        public IActionResult Delete(FakeCard fakeCard)
         {
-            var result = _customerService.Delete(customer);
+            var result = _fakeCardService.Delete(fakeCard);
             if (result.Success)
             {
                 return Ok(result);
@@ -89,15 +44,58 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(Customer customer)
+        public IActionResult Update(FakeCard fakeCard)
         {
-            var result = _customerService.Update(customer);
+            var result = _fakeCardService.Update(fakeCard);
             if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
         }
+
+        [HttpGet("getall")]
+        public IActionResult GetAll()
+        {
+            var result = _fakeCardService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbyid")]
+        public IActionResult GetById(int id)
+        {
+            var result = _fakeCardService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbycardnumber")]
+        public IActionResult GetByCardNumber(string cardNumber)
+        {
+            var result = _fakeCardService.GetByCardNumber(cardNumber);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("iscardexist")]
+        public IActionResult IsCardExist(FakeCard fakeCard)
+        {
+            var result = _fakeCardService.IsCardExist(fakeCard);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return Ok(result);
+        }
     }
 }
-
