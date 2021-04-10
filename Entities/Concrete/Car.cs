@@ -14,6 +14,7 @@ namespace Entities.Concrete
         public string ModelYear { get; set; }
         public decimal DailyPrice { get; set; }
         public string Descriptions { get; set; }
-        
+        public int Findeks { get; set; }
+
     }
 }

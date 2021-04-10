@@ -33,10 +33,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("delete")]
-        public IActionResult Delete([FromForm(Name = ("Id"))] int Id)
+        public IActionResult Delete(int id)
         {
 
-            var carImage = _carImageService.Get(Id).Data;
+            var carImage = _carImageService.Get(id).Data;
 
             var result = _carImageService.Delete(carImage);
             if (result.Success)
@@ -59,9 +59,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getbyid")]
-        public IActionResult GetById(int Id)
+        public IActionResult GetById(int id)
         {
-            var result = _carImageService.Get(Id);
+            var result = _carImageService.Get(id);
             if (result.Success)
             {
                 return Ok(result);

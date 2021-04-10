@@ -2,8 +2,10 @@
 using Business.Constants;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
+using Core.Utilities.Security.Hashing;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,47 +14,61 @@ namespace Business.Concrete
 {
     public class UserManager : IUserService
     {
-        IUserDal _user;
-        public UserManager(IUserDal user)
+        IUserDal _userDal;
+        public UserManager(IUserDal userDal)
         {
-            _user = user;
+            _userDal = userDal;
         }
         public IResult Add(User user)
         {
-            _user.Add(user);
+            _userDal.Add(user);
             return new SuccessResult(Messages.UserAdded);
         }
 
         public IResult Delete(User user)
         {
-            _user.Delete(user);
+            _userDal.Delete(user);
             return new SuccessResult(Messages.UserDeleted);
         }
 
         public IDataResult<List<User>> GetAll()
         {
 
-            return new SuccessDataResult<List<User>>(_user.GetAll());
+            return new SuccessDataResult<List<User>>(_userDal.GetAll());
         }
 
-        public IDataResult<User> GetById(int userId)
+        public IDataResult<User> GetById(int id)
         {
-            return new SuccessDataResult<User>(_user.Get(u => u.Id == userId));
+            return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id));
         }
-        public User GetByMail(string email)
+        public IDataResult<User> GetByMail(string email)
         {
-            return _user.Get(u => u.Email == email);
-        }
-
-        public List<OperationClaim> GetClaims(User user)
-        {
-            return _user.GetClaims(user);
+            return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email));
         }
 
-        public IResult Update(User user)
+        public IDataResult<List<OperationClaim>> GetClaims(User user)
         {
-            _user.Delete(user);
-            return new SuccessResult(Messages.UserUpdated);
+            return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
+
+        }
+
+        public IResult Update(User user, string password)
+        {
+
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            var updatedUser = new User
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Status = user.Status
+            };
+            _userDal.Update(updatedUser);
+            return new SuccessDataResult<User>(Messages.UserUpdated);
         }
     }
 }
