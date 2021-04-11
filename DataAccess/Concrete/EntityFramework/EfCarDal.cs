@@ -39,7 +39,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  ImageId = cimg.Id,
                                  ModelYear = car.ModelYear,
                                  Descriptions = car.Descriptions,
-                                 Status = !context.Rentals.Any(r => r.CarId == car.Id && (r.ReturnDate == null || r.ReturnDate > DateTime.Now))
+                                 Status = !context.Rentals.Any(r => r.CarId == car.Id && (r.ReturnDate == null || r.ReturnDate > DateTime.Now)),
+                                 FindeksScore = car.FindeksScore
                              };
                 return result.ToList();
             }

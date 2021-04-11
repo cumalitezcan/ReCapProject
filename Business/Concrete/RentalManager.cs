@@ -14,10 +14,13 @@ namespace Business.Concrete
     {
         IRentalDal _rentalDal;
 
+
         public RentalManager(IRentalDal rentalDal)
         {
             _rentalDal = rentalDal;
+           
         }
+
 
         public IResult Add(Rental rental)
         {
@@ -85,5 +88,7 @@ namespace Business.Concrete
 
             return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.CarId == carId));
         }
+
+       
     }
 }

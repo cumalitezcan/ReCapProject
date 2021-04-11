@@ -16,5 +16,6 @@ namespace Business.Abstract
         IDataResult<Customer> GetById(int id);
         IDataResult<List<CustomerDetailDto>> GetCustomerDetails();
         IDataResult<List<CustomerDetailDto>> GetCustomerDetailById(int customerId);
+        void AddFindeksScore(int customerId, int carId);
     }
 }

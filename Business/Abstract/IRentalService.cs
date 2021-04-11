@@ -20,7 +20,7 @@ namespace Business.Abstract
         IDataResult<Rental> CheckReturnDate(int carId);
         IDataResult<List<RentalDetailDto>> GetRentalDetails();
         IDataResult<List<RentalDetailDto>> GetRentalDetailsByCarId(int carId);
-        
+       
 
 
     }

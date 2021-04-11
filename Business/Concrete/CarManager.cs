@@ -24,7 +24,7 @@ namespace Business.Concrete
         IRentalService _rentalService;
        
 
-        public CarManager(ICarDal carDal,IRentalService rentalService,ICarImageService carImageService)
+        public CarManager(ICarDal carDal,IRentalService rentalService)
         {
             _carDal = carDal;
             _rentalService = rentalService;
@@ -155,6 +155,12 @@ namespace Business.Concrete
         public IDataResult<List<CarDetailDto>> GetCarsDetailByBrandIdAndColorId(int brandId, int colorId)
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.BrandId == brandId && c.ColorId == colorId));
+        }
+        public decimal CalculateFindeksScore(int carId)
+        {
+            var car = _carDal.Get(c => c.Id == carId);
+            var scoreToAdd = (car.DailyPrice * 5) / 100;
+            return scoreToAdd;
         }
     }
 

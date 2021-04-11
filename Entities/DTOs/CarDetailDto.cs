@@ -20,6 +20,7 @@ namespace Entities.DTOs
         public string ModelYear { get; set; }
         public string Descriptions { get; set; }
         public bool Status { get; set; }
+        public int FindeksScore { get; set; }
 
 
 
