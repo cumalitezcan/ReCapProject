@@ -1,8 +1,8 @@
 
-# ReCapProject : Car Rental System
+# Car Rental Project
 CarRental ReCap projesinin .Net Core ile yapılan backend tarafıdır.
 
-![rent-a-car-acmak](https://user-images.githubusercontent.com/34379535/114320977-4ba0fd80-9b21-11eb-9174-ebb53ee883db.jpg)
+![ CarRental Project](https://github.com/cumalitezcan/Task1/blob/main/gifs/carrental.gif)
 
 :red_car: This repository includes the backend of the car rental system. <br/>
 
