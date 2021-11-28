@@ -1,6 +1,6 @@
 
 # Car Rental Project
-CarRental ReCap projesinin .Net Core ile yapılan backend tarafıdır.
+It is the backend side of CarRental ReCap project made with .Net Core.
 
 ![ CarRental Project](https://github.com/cumalitezcan/Task1/blob/main/gifs/carrental.gif)
 
